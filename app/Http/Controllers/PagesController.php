@@ -22,6 +22,14 @@ class PagesController extends Controller
     public function sports() 
     {
         $title = 'Sports';
-        return view('pages.sports')->with('title', $title);
+        // $data = [
+        //     'Sport-type' => [
+        //         'Indoor' => ['Chess', 'Scrabble'],
+        //         'Outdoor' => ['Football', 'Basketball']
+        //     ]
+        // ];
+        $data = ['Football', 'Basketball', 'Gulf', 'Baseball', 'Tennis'];
+                
+        return view('pages.sports')->with('title', $title)->with('sports', $data);
     }
 }
