@@ -14,8 +14,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        //get request to /posts is handled here
-        $posts = Post::all();
+        // get request to /posts is handled here
+        // $posts = Post::all();
+        // $posts = Post::orderBy('id', 'desc')->get();
+        $posts = Post::orderBy('id', 'desc')->paginate(4);
         return view('posts.index')->with('posts', $posts);
     }
 
@@ -27,6 +29,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        return view('posts.create');
     }
 
     /**
@@ -48,7 +51,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        //show individual posts
+        $post = Post::find($id);
+        return view('posts.show')->with('post', $post);
     }
 
     /**
