@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
         <a class="navbar-brand" href="/">{{config('app.name')}}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -23,6 +23,9 @@
                 <a class="dropdown-item" href="#">Chess</a>
                 <a class="dropdown-item" href="#">Scrabble</a>
               </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/posts">Blog</a>
             </li>
             <li class="nav-item">
               <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Go Live!</a>
