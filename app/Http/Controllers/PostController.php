@@ -53,13 +53,33 @@ class PostController extends Controller
     {
         $this->validate($request, [
             'title'=>'required|min:4',
-            'body'=>'required|min:5'
+            'body'=>'required|min:5',
+            'cover_image'=>'image|nullable|max:1999'
         ]);
 
+        if($request->hasFile('cover_image')) {
+            //Get full filename
+            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+
+            //Extract filename only
+            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+            //Extract extenstion only
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+            //Combine again with timestamp in the middle to differentiate files with same filename.
+            $filenameToStore = $filenameWithoutExt . '_' . time() . '.' . $extension;
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $filenameToStore);
+        } else {
+            $filenameToStore = 'noimage.jpg';
+        }
+        
+        
         $post = new Post;
         $post->title = $request->get('title');
         $post->body = $request->get('body');
         $post->user_id = auth()->user()->id;
+        $post->cover_image = $filenameToStore;
         $post->save();
 
         return redirect('/dashboard')->with('success', 'Post created!');
@@ -88,7 +108,7 @@ class PostController extends Controller
     {
         //load the post to edit
         $post = Post::find($id);
-        if(auth()->user()->id !== $post->id) {
+        if(auth()->user()->id !== $post->user_id) {
             return redirect()->back()->with('error', 'You can\'t access this page!');
         } else {
         return view('posts.edit')->with('post', $post);
@@ -107,12 +127,31 @@ class PostController extends Controller
         //
         $this->validate($request, [
             'title'=>'required|min:4',
-            'body'=>'required|min:5'
+            'body'=>'required|min:5',
+            'cover_image'=>'image|nullable|max:1999'
         ]);
+
+        if($request->hasFile('cover_image')) {
+            //Get full filename
+            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+
+            //Extract filename only
+            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+            //Extract extenstion only
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+            //Combine again with timestamp in the middle to differentiate files with same filename.
+            $filenameToStore = $filenameWithoutExt . '_' . time() . '.' . $extension;
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $filenameToStore);
+        } else {
+            $filenameToStore = 'noimage.jpg';
+        }
 
         $post = Post::find($id);
         $post->title = $request->get('title');
         $post->body = $request->get('body');
+        $post->cover_image = $filenameToStore;
         $post->save();
 
         return redirect('/dashboard')->with('success', 'Post updated!');
@@ -129,8 +168,11 @@ class PostController extends Controller
     {
         //delete post
         $post = Post::find($id);
-        $post->delete();
-
+        if(auth()->user()->id !== $post->user_id) {
+            return redirect('/posts')->with('error', 'You can\'t access this page!');
+        } else {
+            $post->delete();
         return redirect('/dashboard')->with('success', 'Post removed!');
+        }
     }
 }

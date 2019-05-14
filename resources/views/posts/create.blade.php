@@ -3,7 +3,7 @@
 @section('content')
     <h1 class="mb-3">Create Post</h1>
     
-    <form action="/posts" method="POST">
+    <form action="/posts" method="POST" enctype="multipart/form-data">
         @csrf
         
         {{-- @if(count($errors->get('title'))>0)
@@ -28,13 +28,10 @@
             <textarea id="ckeditor" name="body"  placeholder="Enter body text" class="form-control" rows="5"></textarea>
         </div>
 
+        <div class="form-group">
+            <input name="cover_image" type="file" class="card">
+        </div>
+
         <input type="submit" value="Submit" class="btn btn-primary">
     </form>
-    {{-- {{Form::Open(['action'=>'PostController@store', 'method'=>'POST'])}}
-        <div class="form-group">
-            {{Form::label('title', 'Title')}}
-            {{Form::text('title', '')}}
-        </div>
-    {{Form::Close()}} --}}
-
 @endsection

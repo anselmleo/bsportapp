@@ -3,7 +3,8 @@
 @section('content')
     
     <h1>{{$post->title}}</h1>
-    
+    <img src="/storage/cover_images/{!! $post->cover_image !!}" alt="Cover Image" style="width:500px">
+    <br><br>
     <div class="jumbotron p-3">{!!$post->body!!}</div>
     <hr>
 

@@ -24,4 +24,4 @@ Route::get('/sports', 'PagesController@sports');
 Route::resource('posts','PostController');
 Auth::routes();
 
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Route::get('/dashboard', 'DashboardController@index');

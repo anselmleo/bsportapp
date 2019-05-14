@@ -15,13 +15,15 @@
                     @endif
                     <a class="btn btn-primary mb-5" href="/posts/create">Create Post</a>
                     <h3>Your Blog Posts</h3>
-                    <table class="table table-striped">
-                        <tr>
-                            <th>Title</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
+                    @if(count($posts) > 0)
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Title</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                                
                             @foreach ($posts as $post)
                             <tr>
                                 <th>{{$post->title}}</th>
@@ -36,7 +38,10 @@
                                 </th>
                             </tr>
                             @endforeach
-                    </table>
+                        </table>
+                    @else 
+                        <p class="card p-5 alert-primary">You have not created any posts.</p>
+                    @endif
                 </div>
             </div>
         </div>
