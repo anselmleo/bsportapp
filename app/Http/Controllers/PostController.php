@@ -7,6 +7,17 @@ use App\Post;
 
 class PostController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index', 'show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -48,9 +59,10 @@ class PostController extends Controller
         $post = new Post;
         $post->title = $request->get('title');
         $post->body = $request->get('body');
+        $post->user_id = auth()->user()->id;
         $post->save();
 
-        return redirect('/posts')->with('success', 'Post created!');
+        return redirect('/dashboard')->with('success', 'Post created!');
     }
 
     /**
@@ -76,7 +88,11 @@ class PostController extends Controller
     {
         //load the post to edit
         $post = Post::find($id);
+        if(auth()->user()->id !== $post->id) {
+            return redirect()->back()->with('error', 'You can\'t access this page!');
+        } else {
         return view('posts.edit')->with('post', $post);
+        }
     }
 
     /**
@@ -99,7 +115,7 @@ class PostController extends Controller
         $post->body = $request->get('body');
         $post->save();
 
-        return redirect('/posts')->with('success', 'Post updated!');
+        return redirect('/dashboard')->with('success', 'Post updated!');
 
     }
 
@@ -115,6 +131,6 @@ class PostController extends Controller
         $post = Post::find($id);
         $post->delete();
 
-        return redirect('/posts')->with('success', 'Post removed!');
+        return redirect('/dashboard')->with('success', 'Post removed!');
     }
 }

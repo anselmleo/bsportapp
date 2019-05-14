@@ -25,7 +25,7 @@
                 <div class="alert alert-danger"> {{$message}}</div>
             @enderror
             <label for="body">Body</label>
-            <textarea id="article-ckeditor" name="body"  placeholder="Enter body text" class="form-control" rows="5"></textarea>
+            <textarea id="ckeditor" name="body"  placeholder="Enter body text" class="form-control" rows="5"></textarea>
         </div>
 
         <input type="submit" value="Submit" class="btn btn-primary">
