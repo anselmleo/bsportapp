@@ -3,7 +3,7 @@
 @section('content')
     <h1 class="mb-3">Edit Post</h1>
     
-<form action="/posts/{{$post->id}}" method="POST">
+    <form action="/posts/{{$post->id}}" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="_method" value="put">
         @csrf
         
@@ -28,6 +28,8 @@
             <label for="body">Body</label>
             <textarea id="ckeditor" name="body"  placeholder="Enter body text" class="form-control" rows="5">{{$post->body}}</textarea>
         </div>
+
+        <input type="file" value="{{$post->cover_image}}" class="card mb-2">
 
         <input type="submit" value="Submit" class="btn btn-primary">
     </form>

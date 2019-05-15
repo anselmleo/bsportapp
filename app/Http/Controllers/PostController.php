@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Post;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -144,18 +145,17 @@ class PostController extends Controller
             //Combine again with timestamp in the middle to differentiate files with same filename.
             $filenameToStore = $filenameWithoutExt . '_' . time() . '.' . $extension;
             $path = $request->file('cover_image')->storeAs('public/cover_images', $filenameToStore);
-        } else {
-            $filenameToStore = 'noimage.jpg';
         }
 
         $post = Post::find($id);
         $post->title = $request->get('title');
         $post->body = $request->get('body');
-        $post->cover_image = $filenameToStore;
+        if($request->hasFile('cover_image')) {
+            $post->cover_image = $filenameToStore;
+        }
         $post->save();
 
         return redirect('/dashboard')->with('success', 'Post updated!');
-
     }
 
     /**
@@ -171,8 +171,12 @@ class PostController extends Controller
         if(auth()->user()->id !== $post->user_id) {
             return redirect('/posts')->with('error', 'You can\'t access this page!');
         } else {
+            $cover_image = $post->cover_image;
+            if($cover_image != 'noimage.jpg') {
+                Storage::delete('public/cover_images/' . $cover_image);
+            }
             $post->delete();
-        return redirect('/dashboard')->with('success', 'Post removed!');
+            return redirect('/dashboard')->with('success', 'Post removed!');
         }
     }
 }
